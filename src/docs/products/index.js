@@ -3,10 +3,10 @@ const getRandomProduct = require("./getRandomProduct.js")
 
 module.exports = {
   paths: {
-    "/product": {
+    "/api/product": {
       ...getProducts,
     },
-    "/product/random": {
+    "/api/product/random": {
       ...getRandomProduct,
     },
   },

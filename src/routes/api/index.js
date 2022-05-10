@@ -5,7 +5,7 @@ const docs = require("../../docs");
 
 const ApiRouter = express.Router();
 
-ApiRouter.use("/product", ProductRouter);
+ApiRouter.use("/api/product", ProductRouter);
 ApiRouter.use("/docs", swaggerUI.serve, swaggerUI.setup(docs));
 
 module.exports = ApiRouter;

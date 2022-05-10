@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-commerce app</title>
+  </head>
+  <body>
+    <form action="https://ecommerce-pennacchioni.herokuapp.com/api/product" method="POST">
+      <label for="title">Nombre del producto</label>
+      <input id="title" type="text" name="title" /><br>
+
+      <label for="price">Precio unitario</label>
+      <input id="price" type="number" name="price" /><br>
+
+      <label for="quantity">Cantidad</label>
+      <input id="quantity" type="number" name="quantity" /><br>
+
+      <!-- <label for="image">Cargá una imagen del producto</label>
+      <input id="image" type="file" name="image" /><br> -->
+
+      <input type="submit" value="Agregar producto" />
+    </form>
+  </body>
+</html>
