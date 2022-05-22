@@ -5,9 +5,47 @@ const express = require("express");
 const ApiRouter = require("./routes/api");
 const handlebars = require("express-handlebars");
 const Handlebars = require('handlebars');
+const http = require('http');
+const { Server } = require("socket.io");
 
 const port = process.env.PORT || 8080;
+
+// --------------------------------------
+// server, socket and api instance
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+// --------------------------------------
+// socket configuration, adecuarlo a mi proyecto!!!
+
+io.on('connection', (socket) => {
+
+  console.log('new user connected')
+  // carga inicial de productos
+  socket.emit('productos', productosApi.listarAll());
+
+  // actualizacion de productos
+  socket.on('update', producto => {
+      productosApi.guardar(producto)
+      io.sockets.emit('productos', productosApi.listarAll());
+  })
+
+  // carga inicial de mensajes
+  socket.emit('mensajes', await mensajesApi.listarAll());
+
+  // actualizacion de mensajes
+  socket.on('nuevoMensaje', async mensaje => {
+      mensaje.fyh = new Date().toLocaleString()
+      await mensajesApi.guardar(mensaje)
+      io.sockets.emit('mensajes', await mensajesApi.listarAll());
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+})
 
 //Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -55,6 +93,6 @@ app.use((req, res, next) => {
 });
 app.use("/", ApiRouter);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.info(`Express server listening on port ${port}`);
 });

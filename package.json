@@ -30,6 +30,7 @@
     "express-handlebars": "^5.2.0",
     "morgan": "^1.10.0",
     "pug": "^3.0.2",
+    "socket.io": "^4.5.1",
     "swagger-ui-express": "^4.3.0"
   }
 }
