@@ -1,0 +1,41 @@
+extends layouts/index.pug
+
+block view
+    style.
+        .table td, .table th {
+            vertical-align: middle;
+        }
+        h1 {
+            color: rgb(2, 136, 209);
+        }
+        hr {
+            background-color: #fff;
+        }
+        .jumbotron {
+            min-height: 100vh;
+        }
+
+    div(class="jumbotron")
+        h1='Vista de Productos'
+        br
+        if productsLength
+            div(class="table-responsive")
+                table(class="table table-striped")
+                    tr
+                        th='#'
+                        th='Nombre'
+                        th='Precio'
+                        th='Cantidad'
+                        th='Foto'
+                        each product, i in products
+                            tr
+                                td=i+1
+                                td=product.title
+                                td=product.price
+                                td=product.quantity
+                                td
+                                    img(width="50" src=product.thumbnail alt="not found")
+        else
+            h3(class="alert alert-warning")='No se encontraron productos'
+        br
+        a(href="/" type="button" class="btn btn-primary")='Cargar un nuevo producto'

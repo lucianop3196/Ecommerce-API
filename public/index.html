@@ -1,26 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-commerce app</title>
-  </head>
-  <body>
-    <form action="https://ecommerce-pennacchioni.herokuapp.com/api/product" method="POST">
-      <label for="title">Nombre del producto</label>
-      <input id="title" type="text" name="title" /><br>
+<html lang="es">
 
-      <label for="price">Precio unitario</label>
-      <input id="price" type="number" name="price" /><br>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Ingreso de Productos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
 
-      <label for="quantity">Cantidad</label>
-      <input id="quantity" type="number" name="quantity" /><br>
+<body>
 
-      <!-- <label for="image">Cargá una imagen del producto</label>
-      <input id="image" type="file" name="image" /><br> -->
+    <div class="container mt-3">
+        <div class="jumbotron">
+            <h1>Ingrese Producto</h1>
+            <br>
 
-      <input type="submit" value="Agregar producto" />
-    </form>
-  </body>
+            <form action="/api/product" method="POST">
+                <!-- Campo nombre del producto -->
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input id="name" class="form-control" type="text" name="title" required>
+                </div>
+
+                <!-- Campo precio del producto -->
+                <div class="form-group">
+                    <label for="price">Precio</label>
+                    <input id="price" class="form-control" type="number" step="0.01" name="price" required>
+                </div>
+
+                <!-- Campo precio del producto -->
+                <div class="form-group">
+                    <label for="quantity">Cantidad</label>
+                    <input id="quantity" class="form-control" type="number" step="0.01" name="quantity" required>
+                </div>
+
+                <!-- Campo url de la foto del producto -->
+                <div class="form-group">
+                    <label for="picture">Foto URL</label>
+                    <input id="picture" class="form-control" type="url" name="thumbnail">
+                </div>
+
+                <!-- Botón de envío -->
+                <button class="btn btn-success mt-3">Guardar</button>
+            </form>
+            <br>
+            <a href="/api/product" type="button" class="btn btn-primary">Ver productos</button>
+        </div>
+    </div>
+
+</body>
+
 </html>

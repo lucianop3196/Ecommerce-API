@@ -73,7 +73,7 @@ class ProductController {
     try {
       const file = await getEntireFile(fileName);
       if (!file) {
-        return { code: 400, error: "None product found" };
+        return { code: 200, products: [] };
       }
       return { code: 200, products: file };
     } catch (error) {

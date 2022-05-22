@@ -5,21 +5,26 @@ var path = require("path");
 
 const ProductRouter = express.Router();
 
-ProductRouter.get("/home", async (req, res) => {
-  try {
-    res.sendFile(path.resolve("./public/index.html"));
-  } catch (err) {
-    console.log(err);
-    return res.status(400).send("Error: ", err);
-  }
-});
+// ProductRouter.get("/home", async (req, res) => {
+//   try {
+//     res.sendFile(path.resolve("./public/index.html"));
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(400).send("Error: ", err);
+//   }
+// });
 
 ProductRouter.get("", async (req, res) => {
   try {
     const { code, ...message } = await ProductController.getAll(
       "productos.txt"
     );
-    return res.status(code).json(message);
+    // return res.status(code).json(message);
+    if (code === 400) return res.status(code).json(message);
+    return res.render("view", {
+      products: message.products,
+      productsLength: message.products.length,
+    });
   } catch (err) {
     console.log(err);
     return res.status(400).send("Error: ", err);
@@ -72,7 +77,8 @@ ProductRouter.post("", async (req, res) => {
       req.body,
       "productos.txt"
     );
-    res.status(code).json(message);
+    // res.status(code).json(message);
+    return res.redirect("/");
   } catch (err) {
     console.log(err);
     return res

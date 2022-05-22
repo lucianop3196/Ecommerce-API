@@ -1,0 +1,50 @@
+<style>
+    .table td,
+    .table th {
+        vertical-align: middle;
+    }
+
+    h1 {
+        color: rgb(2, 136, 209);
+    }
+
+    hr {
+        background-color: #fff;
+    }
+
+    .jumbotron {
+        min-height: 100vh;
+    }
+</style>
+
+<div class="jumbotron">
+    <h1>Vista de Productos</h1>
+    <br>
+
+    {{#if productsLength}}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Foto</th>
+            </tr>
+            {{#each products}}
+            <tr>
+                <td>{{inc @index}}</td>
+                <td>{{this.title}}</td>
+                <td>${{this.price}}</td>
+                <td>{{this.quantity}}</td>
+                <td><img width="50" src={{this.thumbnail}} alt="not found"></td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+    {{else}}
+    <h3 class="alert alert-warning">No se encontraron productos</h3>
+    {{/if}}
+    <br>
+    <a href="/" type="button" class="btn btn-primary">Cargar un nuevo producto</a>
+    
