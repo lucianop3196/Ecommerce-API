@@ -3,10 +3,12 @@ const cors = require("cors");
 var morgan = require("morgan");
 const express = require("express");
 const ApiRouter = require("./routes/api");
-const handlebars = require("express-handlebars");
-const Handlebars = require('handlebars');
-const http = require('http');
+// const handlebars = require("express-handlebars");
+// const Handlebars = require('handlebars');
+const http = require("http");
 const { Server } = require("socket.io");
+const MemoryContainer = require("../container/MemoryContainer.js");
+const ProductController = require("./controllers/product");
 
 const port = process.env.PORT || 8080;
 
@@ -17,35 +19,41 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const apiMessages = new MemoryContainer();
+const filename = "productos.txt";
 // --------------------------------------
 // socket configuration, adecuarlo a mi proyecto!!!
 
-io.on('connection', (socket) => {
-
-  console.log('new user connected')
+io.on("connection", async (socket) => {
+  console.log("new user connected");
   // carga inicial de productos
-  socket.emit('productos', productosApi.listarAll());
+  const { products } = await ProductController.getAll(filename);
+  socket.emit("products", products);
 
   // actualizacion de productos
-  socket.on('update', producto => {
-      productosApi.guardar(producto)
-      io.sockets.emit('productos', productosApi.listarAll());
-  })
+  socket.on("update", async (product) => {
+    await ProductController.save(product, filename);
+    const {products} = await ProductController.getAll(filename)
+    io.sockets.emit(
+      "products",
+      products
+    );
+  });
 
   // carga inicial de mensajes
-  socket.emit('mensajes', await mensajesApi.listarAll());
+  socket.emit("messages", apiMessages.listAll());
 
   // actualizacion de mensajes
-  socket.on('nuevoMensaje', async mensaje => {
-      mensaje.fyh = new Date().toLocaleString()
-      await mensajesApi.guardar(mensaje)
-      io.sockets.emit('mensajes', await mensajesApi.listarAll());
-  })
-
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on("newMessage", async (message) => {
+    message.fyh = new Date().toLocaleString();
+    await apiMessages.save(message);
+    io.sockets.emit("messages", await apiMessages.listAll());
   });
-})
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 //Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -72,8 +80,8 @@ app.use(express.static("public"));
 // app.set("views", "./views/handlebars");
 
 // ejs --------------------------------------
-app.set('views', './views/ejs');
-app.set('view engine', 'ejs');
+// app.set('views', './views/ejs');
+// app.set('view engine', 'ejs');
 
 // pug --------------------------------------
 // app.set("views", "./views/pug");
